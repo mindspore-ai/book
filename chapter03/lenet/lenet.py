@@ -13,7 +13,6 @@
 # limitations under the License.
 # ============================================================================
 """LeNet."""
-import mindspore.ops.operations as P
 import mindspore.nn as nn
 from mindspore.common.initializer import TruncatedNormal
 

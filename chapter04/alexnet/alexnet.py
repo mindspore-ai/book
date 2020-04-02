@@ -14,7 +14,6 @@
 # ============================================================================
 """Alexnet."""
 from config import alexnet_cfg as cfg
-import mindspore.ops.operations as P
 import mindspore.nn as nn
 from mindspore.common.initializer import TruncatedNormal
 
