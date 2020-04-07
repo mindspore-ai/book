@@ -14,7 +14,7 @@
 # ============================================================================
 """
 train and evaluate resnet example for cifar10 dataset
-1.For environment used for deploying this script please choose Ascend.
+1.The sample can only be run on Ascend 910 AI processor.
 2.Aroud 30s per epoch and about 90% accuracy when the number of epoch reaches 34.
 """
 import os
