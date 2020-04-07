@@ -13,7 +13,8 @@
 # limitations under the License.
 # ============================================================================
 """
-LSTM Tutorial
+LSTM Sample, has train and evaluate part.
+The sample can only be run on GPU.
 """
 import os
 import shutil
