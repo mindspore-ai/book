@@ -74,7 +74,6 @@ def train_bert():
     """train bert"""
     context.set_context(mode=context.GRAPH_MODE)
     context.set_context(device_target="Ascend")
-    context.set_context(enable_task_sink=True)
     context.set_context(enable_loop_sink=True)
     context.set_context(enable_mem_reuse=True)
     ds = create_train_dataset(bert_net_cfg.batch_size)

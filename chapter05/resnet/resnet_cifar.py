@@ -65,7 +65,7 @@ context.set_context(mode=context.GRAPH_MODE, device_target=args_opt.device_targe
 if args_opt.device_target == "Ascend":
     #Choose one availabe Device to use on users' env.
     device_id = int(os.getenv('DEVICE_ID'))
-    context.set_context(enable_task_sink=True, device_id=device_id)
+    context.set_context(device_id=device_id)
     context.set_context(enable_loop_sink=True)
     context.set_context(enable_mem_reuse=False)
 
