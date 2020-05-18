@@ -66,8 +66,6 @@ if args_opt.device_target == "Ascend":
     #Choose one availabe Device to use on users' env.
     device_id = int(os.getenv('DEVICE_ID'))
     context.set_context(device_id=device_id)
-    context.set_context(enable_loop_sink=True)
-    context.set_context(enable_mem_reuse=False)
 
 def create_dataset(repeat_num=1, training=True):
     """create the dataset of cifar10"""
