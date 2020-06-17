@@ -21,20 +21,18 @@ from mindspore import nn
 from mindspore import context, Tensor
 from mindspore.train import Model
 from mindspore.ops import operations as P
-from mindspore.common.initializer import TruncatedNormal
 from mindspore.dataset.transforms.vision import c_transforms as transforms
 from mindspore.dataset.transforms.vision import Inter
 from mindspore.dataset.transforms import c_transforms as C
 from mindspore.ops import functional as F
 from mindspore.common import dtype as mstype
-from mindspore.train.callback import SummaryStep
-from mindspore.train.summary.summary_record import SummaryRecord
+from mindspore.train.callback import SummaryCollector
+
+from .lenet import LeNet5
 
 
 class CrossEntropyLoss(nn.Cell):
-    """
-    Define loss for network
-    """
+    """Define loss function for network."""
     def __init__(self):
         super(CrossEntropyLoss, self).__init__()
         self.sm_scalar = P.ScalarSummary()
@@ -52,11 +50,8 @@ class CrossEntropyLoss(nn.Cell):
         return loss
 
 
-def create_dataset(data_path, batch_size=32, repeat_size=1,
-                   num_parallel_workers=1):
-    """
-    create dataset for train or test
-    """
+def create_dataset(data_path, batch_size=32, repeat_size=1, num_parallel_workers=1):
+    """Create dataset for train or test."""
     # define dataset
     mnist_ds = dataset.MnistDataset(data_path)
 
@@ -85,58 +80,6 @@ def create_dataset(data_path, batch_size=32, repeat_size=1,
     return mnist_ds
 
 
-def conv(in_channels, out_channels, kernel_size, stride=1, padding=0):
-    weight = weight_variable()
-    return nn.Conv2d(in_channels, out_channels,
-                     kernel_size=kernel_size, stride=stride, padding=padding,
-                     weight_init=weight, has_bias=False, pad_mode="valid")
-
-
-def fc_with_initialize(input_channels, out_channels):
-    weight = weight_variable()
-    bias = weight_variable()
-    return nn.Dense(input_channels, out_channels, weight, bias)
-
-
-def weight_variable():
-    return TruncatedNormal(0.02)
-
-
-class LeNet5(nn.Cell):
-    """
-    Lenet network
-    """
-    def __init__(self):
-        super(LeNet5, self).__init__()
-        self.sm_image = P.ImageSummary()
-
-        self.batch_size = 32
-        self.conv1 = conv(1, 6, 5)
-        self.conv2 = conv(6, 16, 5)
-        self.fc1 = fc_with_initialize(16 * 5 * 5, 120)
-        self.fc2 = fc_with_initialize(120, 84)
-        self.fc3 = fc_with_initialize(84, 10)
-        self.relu = nn.ReLU()
-        self.max_pool2d = nn.MaxPool2d(kernel_size=2, stride=2)
-        self.reshape = P.Reshape()
-
-    def construct(self, x):
-        self.sm_image("image", x)
-        x = self.conv1(x)
-        x = self.relu(x)
-        x = self.max_pool2d(x)
-        x = self.conv2(x)
-        x = self.relu(x)
-        x = self.max_pool2d(x)
-        x = self.reshape(x, (self.batch_size, -1))
-        x = self.fc1(x)
-        x = self.relu(x)
-        x = self.fc2(x)
-        x = self.relu(x)
-        x = self.fc3(x)
-        return x
-
-
 def main(data_path, device_target='Ascend', summary_dir='./summary_dir', learning_rate=0.01):
     context.set_context(mode=context.GRAPH_MODE, device_target=device_target)
 
@@ -150,15 +93,13 @@ def main(data_path, device_target='Ascend', summary_dir='./summary_dir', learnin
     net_opt = nn.Momentum(network.trainable_params(), learning_rate, momentum)
     model = Model(network, net_loss, net_opt)
 
-    # add summary writer
-    summary_writer = SummaryRecord(log_dir=summary_dir, network=network)
-    summary_callback = SummaryStep(summary_writer, flush_step=10)
+    # Init SummaryCollector callback to record summary data in model.train or model.eval
+    summary_collector = SummaryCollector(summary_dir=summary_dir, collect_freq=10)
 
     ds = create_dataset(os.path.join(data_path, "train"), batch_size=batch_size)
 
     print("============== Starting Training ==============")
-    model.train(epoch_size, ds, callbacks=[summary_callback], dataset_sink_mode=False)
-    summary_writer.close()
+    model.train(epoch_size, ds, callbacks=[summary_collector], dataset_sink_mode=False)
     print("============== Train End =====================")
 
 
