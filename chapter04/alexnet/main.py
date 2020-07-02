@@ -17,14 +17,16 @@ AlexNet example tutorial
 Usage:
      python alexnet.py
 with --device_target=GPU: After 20 epoch training, the accuracy is up to 80%
-with --device_target=Ascend: After 10 epoch training, the accuracy is up to 81%
+with --device_target=Ascend: After 30 epoch training, the accuracy is up to 88%
 """
 
 import argparse
 from config import alexnet_cfg as cfg
 from alexnet import AlexNet
+from generator_lr import get_lr
 import mindspore.dataset as ds
 import mindspore.nn as nn
+from mindspore import Tensor
 from mindspore import context
 from mindspore.train.serialization import load_checkpoint, load_param_into_net
 from mindspore.train.callback import ModelCheckpoint, CheckpointConfig, LossMonitor
@@ -75,7 +77,7 @@ if __name__ == "__main__":
     parser.add_argument('--data_path', type=str, default="./", help='path where the dataset is saved')
     parser.add_argument('--ckpt_path', type=str, default="./ckpt", help='if mode is test, must provide\
                         path where the trained ckpt file')
-    parser.add_argument('--dataset_sink_mode', type=bool, default=False, help='dataset_sink_mode is False or True')
+    parser.add_argument('--dataset_sink_mode', type=bool, default=True, help='dataset_sink_mode is False or True')
     args = parser.parse_args()
 
     context.set_context(mode=context.GRAPH_MODE, device_target=args.device_target)
@@ -83,7 +85,9 @@ if __name__ == "__main__":
     network = AlexNet(cfg.num_classes)
     loss = nn.SoftmaxCrossEntropyWithLogits(is_grad=False, sparse=True, reduction="mean")
     repeat_size = cfg.epoch_size
-    opt = nn.Momentum(network.trainable_params(), cfg.learning_rate, cfg.momentum)
+    # when batch_size=32, steps is 1562
+    lr = Tensor(get_lr(0, cfg.learning_rate, cfg.epoch_size, 1562))
+    opt = nn.Momentum(network.trainable_params(), lr, cfg.momentum)
     model = Model(network, loss, opt, metrics={"Accuracy": Accuracy()})  # test
 
     if args.mode == 'train':
