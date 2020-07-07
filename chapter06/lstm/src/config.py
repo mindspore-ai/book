@@ -13,7 +13,7 @@
 # limitations under the License.
 # ============================================================================
 """
-network config
+network config setting
 """
 from easydict import EasyDict as edict
 
@@ -22,7 +22,7 @@ lstm_cfg = edict({
     'num_classes': 2,
     'learning_rate': 0.1,
     'momentum': 0.9,
-    'num_epochs': 1,
+    'num_epochs': 20,
     'batch_size': 64,
     'embed_size': 300,
     'num_hiddens': 100,
