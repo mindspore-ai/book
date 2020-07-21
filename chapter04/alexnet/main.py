@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     network = AlexNet(cfg.num_classes)
     loss = nn.SoftmaxCrossEntropyWithLogits(is_grad=False, sparse=True, reduction="mean")
-    repeat_size = cfg.epoch_size
+    repeat_size = 1
     # when batch_size=32, steps is 1562
     lr = Tensor(get_lr(0, cfg.learning_rate, cfg.epoch_size, 1562))
     opt = nn.Momentum(network.trainable_params(), lr, cfg.momentum)
