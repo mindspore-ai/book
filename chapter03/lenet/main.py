@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     network = LeNet5(cfg.num_classes)
     net_loss = nn.SoftmaxCrossEntropyWithLogits(is_grad=False, sparse=True, reduction="mean")
-    repeat_size = cfg.epoch_size
+    repeat_size = 1
     net_opt = nn.Momentum(network.trainable_params(), cfg.lr, cfg.momentum)
     config_ck = CheckpointConfig(save_checkpoint_steps=cfg.save_checkpoint_steps,
                                  keep_checkpoint_max=cfg.keep_checkpoint_max)

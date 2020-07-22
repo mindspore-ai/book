@@ -125,7 +125,7 @@ if __name__ == '__main__':
     model = Model(net, loss_fn=ls, optimizer=opt, metrics={'acc'})
 
     if args_opt.do_train:
-        dataset = create_dataset(epoch_size)
+        dataset = create_dataset()
         batch_num = dataset.get_dataset_size()
         config_ck = CheckpointConfig(save_checkpoint_steps=batch_num, keep_checkpoint_max=10)
         ckpoint_cb = ModelCheckpoint(prefix="train_resnet_cifar10", directory="./", config=config_ck)
