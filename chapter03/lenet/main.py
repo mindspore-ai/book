@@ -82,7 +82,7 @@ if __name__ == "__main__":
                         help='implement phase, set to train or test')
     parser.add_argument('--data_path', type=str, default="./MNIST_Data",
                         help='path where the dataset is saved')
-    parser.add_argument('--ckpt_path', type=str, default="", help='if mode is test, must provide\
+    parser.add_argument('--ckpt_path', type=str, default="./", help='if mode is test, must provide\
                         path where the trained ckpt file')
     parser.add_argument('--dataset_sink_mode', type=bool, default=False, help='dataset_sink_mode is False or True')
 
