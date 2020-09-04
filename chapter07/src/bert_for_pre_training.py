@@ -24,7 +24,7 @@ from mindspore.common.tensor import Tensor
 from mindspore.common.parameter import Parameter, ParameterTuple
 from mindspore.common import dtype as mstype
 from mindspore.nn.wrap.grad_reducer import DistributedGradReducer
-from mindspore.train.parallel_utils import ParallelMode
+from mindspore.context import ParallelMode
 from mindspore.communication.management import get_group_size
 from mindspore import context
 from mindspore.ops import _selected_ops
@@ -280,7 +280,7 @@ class BertTrainOneStepCell(nn.Cell):
             self.reducer_flag = True
         self.grad_reducer = None
         if self.reducer_flag:
-            mean = context.get_auto_parallel_context("mirror_mean")
+            mean = context.get_auto_parallel_context("gradients_mean")
             degree = get_group_size()
             self.grad_reducer = DistributedGradReducer(optimizer.parameters, mean, degree)
 
