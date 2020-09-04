@@ -83,7 +83,7 @@ if __name__ == "__main__":
     context.set_context(mode=context.GRAPH_MODE, device_target=args.device_target)
 
     network = AlexNet(cfg.num_classes)
-    loss = nn.SoftmaxCrossEntropyWithLogits(is_grad=False, sparse=True, reduction="mean")
+    loss = nn.SoftmaxCrossEntropyWithLogits(sparse=True, reduction="mean")
     repeat_size = 1
     # when batch_size=32, steps is 1562
     lr = Tensor(get_lr(0, cfg.learning_rate, cfg.epoch_size, 1562))
