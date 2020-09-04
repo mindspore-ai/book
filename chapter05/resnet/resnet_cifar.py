@@ -31,7 +31,8 @@ import mindspore.dataset.transforms.c_transforms as C2
 from mindspore import Tensor
 from mindspore.ops import operations as P
 from mindspore.nn.optim.momentum import Momentum
-from mindspore.train.model import Model, ParallelMode
+from mindspore.train.model import Model
+from mindspore.context import ParallelMode
 from mindspore import context
 from mindspore.train.callback import ModelCheckpoint, CheckpointConfig, LossMonitor
 from mindspore.train.serialization import load_checkpoint, load_param_into_net
@@ -113,7 +114,7 @@ def create_dataset(repeat_num=1, training=True):
 
 if __name__ == '__main__':
     if args_opt.mode == 'train' and args_opt.run_distribute:
-        context.set_auto_parallel_context(device_num=args_opt.device_num, parallel_mode=ParallelMode.DATA_PARALLEL, mirror_mean=True)
+        context.set_auto_parallel_context(device_num=args_opt.device_num, parallel_mode=ParallelMode.DATA_PARALLEL, gradients_mean=True)
         auto_parallel_context().set_all_reduce_fusion_split_indices([140])
         init()
 
