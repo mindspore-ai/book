@@ -49,7 +49,7 @@ def GCNTrainer(in_dim, out_dim, num_classes,num_epoch, graph_data):
         accumulations = parameters.clone(prefix='moments')
         for i, element in enumerate(grads):
             updated = momentum(element, accumulations[i], parameters[i], lr_v, momen_v)
-            parameters[i].set_parameter_data(updated)
+            parameters[i].set_data(updated)
 
 initilize_embedded_graph(GRAPH_DIR)
 neighbor_node, adj_list = get_neighbor(input_node, k_hop)
