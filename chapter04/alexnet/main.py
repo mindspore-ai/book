@@ -32,7 +32,7 @@ from mindspore.train.serialization import load_checkpoint, load_param_into_net
 from mindspore.train.callback import ModelCheckpoint, CheckpointConfig, LossMonitor
 from mindspore.train import Model
 import mindspore.dataset.transforms.c_transforms as C
-import mindspore.dataset.transforms.vision.c_transforms as CV
+import mindspore.dataset.vision.c_transforms as CV
 from mindspore.nn.metrics import Accuracy
 from mindspore.common import dtype as mstype
 
@@ -53,14 +53,14 @@ def create_dataset(data_path, batch_size=32, repeat_size=1, mode="train"):
         random_horizontal_op = CV.RandomHorizontalFlip()
     channel_swap_op = CV.HWC2CHW()
     typecast_op = C.TypeCast(mstype.int32)
-    cifar_ds = cifar_ds.map(input_columns="label", operations=typecast_op)
+    cifar_ds = cifar_ds.map(operations=typecast_op, input_columns="label")
     if mode == "train":
-        cifar_ds = cifar_ds.map(input_columns="image", operations=random_crop_op)
-        cifar_ds = cifar_ds.map(input_columns="image", operations=random_horizontal_op)
-    cifar_ds = cifar_ds.map(input_columns="image", operations=resize_op)
-    cifar_ds = cifar_ds.map(input_columns="image", operations=rescale_op)
-    cifar_ds = cifar_ds.map(input_columns="image", operations=normalize_op)
-    cifar_ds = cifar_ds.map(input_columns="image", operations=channel_swap_op)
+        cifar_ds = cifar_ds.map(operations=random_crop_op, input_columns="image")
+        cifar_ds = cifar_ds.map(operations=random_horizontal_op, input_columns="image")
+    cifar_ds = cifar_ds.map(operations=resize_op, input_columns="image")
+    cifar_ds = cifar_ds.map(operations=rescale_op, input_columns="image")
+    cifar_ds = cifar_ds.map(operations=normalize_op, input_columns="image")
+    cifar_ds = cifar_ds.map(operations=channel_swap_op, input_columns="image")
 
     cifar_ds = cifar_ds.shuffle(buffer_size=cfg.buffer_size)
     cifar_ds = cifar_ds.batch(batch_size, drop_remainder=True)

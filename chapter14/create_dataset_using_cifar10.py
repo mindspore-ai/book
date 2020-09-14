@@ -18,7 +18,7 @@ from easydict import EasyDict as edict
 
 import mindspore.dataset as de
 from mindspore.dataset.transforms import c_transforms as C
-from mindspore.dataset.transforms.vision import c_transforms as vision
+from mindspore.dataset.vision import c_transforms as vision
 from mindspore.common import dtype as mstype
 import utils
 
@@ -82,8 +82,8 @@ def create_cifar10_dataset(cifar_dir, num_parallel_workers=1):
                 changeswap_op]
 
     # apply map operations on images
-    ds = ds.map(input_columns="label", operations=type_cast_op)
-    ds = ds.map(input_columns="image", operations=c_trans)
+    ds = ds.map(operations=type_cast_op, input_columns="label")
+    ds = ds.map(operations=c_trans, input_columns="image")
 
     # apply repeat operations
     ds = ds.repeat(repeat_num)

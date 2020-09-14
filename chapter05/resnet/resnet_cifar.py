@@ -26,7 +26,7 @@ import mindspore.nn as nn
 import mindspore.common.dtype as mstype
 import mindspore.ops.functional as F
 import mindspore.dataset as de
-import mindspore.dataset.transforms.vision.c_transforms as C
+import mindspore.dataset.vision.c_transforms as C
 import mindspore.dataset.transforms.c_transforms as C2
 from mindspore import Tensor
 from mindspore.ops import operations as P
@@ -98,8 +98,8 @@ def create_dataset(repeat_num=1, training=True):
                 changeswap_op]
 
     # apply map operations on images
-    ds = ds.map(input_columns="label", operations=type_cast_op)
-    ds = ds.map(input_columns="image", operations=c_trans)
+    ds = ds.map(operations=type_cast_op, input_columns="label")
+    ds = ds.map(operations=c_trans, input_columns="image")
 
     # apply repeat operations
     ds = ds.repeat(repeat_num)

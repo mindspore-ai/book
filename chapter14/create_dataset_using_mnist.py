@@ -18,8 +18,8 @@ from easydict import EasyDict as edict
 
 import mindspore.dataset as de
 import mindspore.dataset.transforms.c_transforms as C
-import mindspore.dataset.transforms.vision.c_transforms as VC
-from mindspore.dataset.transforms.vision.utils import Inter
+import mindspore.dataset.vision.c_transforms as VC
+from mindspore.dataset.vision.utils import Inter
 from mindspore.common import dtype as mstype
 import utils
 
@@ -63,19 +63,19 @@ def create_mnist_dataset(mnist_dir, num_parallel_workers=1):
     ds = de.MnistDataset(mnist_dir)
 
     # apply map operations on images
-    ds = ds.map(input_columns="label", operations=C.TypeCast(mstype.int32))
-    ds = ds.map(input_columns="image",
-                operations=VC.Resize((MNIST_CONFIG.image_height, MNIST_CONFIG.image_width), 
-                    interpolation=Inter.LINEAR),
+    ds = ds.map(operations=C.TypeCast(mstype.int32), input_columns="label")
+    ds = ds.map(operations=VC.Resize((MNIST_CONFIG.image_height, MNIST_CONFIG.image_width),
+                                     interpolation=Inter.LINEAR),
+                input_columns="image",
                 num_parallel_workers=num_parallel_workers)
-    ds = ds.map(input_columns="image",
-                operations=VC.Rescale(1 / 0.3081, -1 * 0.1307 / 0.3081),
+    ds = ds.map(operations=VC.Rescale(1 / 0.3081, -1 * 0.1307 / 0.3081),
+                input_columns="image",
                 num_parallel_workers=num_parallel_workers)
-    ds = ds.map(input_columns="image",
-                operations=VC.Rescale(1.0 / 255.0, 0.0),
+    ds = ds.map(operations=VC.Rescale(1.0 / 255.0, 0.0),
+                input_columns="image",
                 num_parallel_workers=num_parallel_workers)
-    ds = ds.map(input_columns="image", 
-                operations=VC.HWC2CHW(),
+    ds = ds.map(operations=VC.HWC2CHW(),
+                input_columns="image",
                 num_parallel_workers=num_parallel_workers)
 
     # apply DatasetOps

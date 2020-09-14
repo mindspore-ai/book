@@ -14,20 +14,23 @@
 # ==============================================================================
 
 import mindspore.dataset as de
-import mindspore.dataset.transforms.vision.py_transforms as F
+import mindspore.dataset.vision.py_transforms as F
+from mindspore.dataset.transforms.py_transforms import Compose
+
 
 def create_imagenet_dataset(imagenet_dir):
-    ds = de.ImageFolderDatasetV2(imagenet_dir)
+    ds = de.ImageFolderDataset(imagenet_dir)
 
-    transform = F.ComposeOp([F.Decode(),
-                             F.RandomHorizontalFlip(0.5),
-                             F.ToTensor(),
-                             F.Normalize((0.491, 0.482, 0.447), (0.247, 0.243, 0.262)),
-                             F.RandomErasing()])
-    ds = ds.map(input_columns="image", operations=transform())
+    transform = Compose([F.Decode(),
+                         F.RandomHorizontalFlip(0.5),
+                         F.ToTensor(),
+                         F.Normalize((0.491, 0.482, 0.447), (0.247, 0.243, 0.262)),
+                         F.RandomErasing()])
+    ds = ds.map(operations=transform, input_columns="image")
     ds = ds.shuffle(buffer_size=5)
     ds = ds.repeat(3)
     return ds
+
 
 if __name__ == "__main__":
     data_set = create_imagenet_dataset('ImageNetDataSimulation/images')
