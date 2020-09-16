@@ -38,7 +38,7 @@ def create_dataset_using_mindrecord_tutorial():
     data_set = data_set.repeat(2)
 
     num_iter = 0
-    for item in data_set.create_dict_iterator():
+    for item in data_set.create_dict_iterator(output_numpy=True):
         print("-------------- index {} -----------------".format(num_iter))
         # print("-------------- item[label]: {} ---------------------".format(item["label"]))
         # print("-------------- item[data]: {} ----------------------".format(item["data"]))
