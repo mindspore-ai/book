@@ -21,7 +21,7 @@ from mindspore import Tensor, nn, context, Parameter, ParameterTuple
 from mindspore.common.initializer import initializer
 from mindspore.ops import operations as P
 
-c
+STACK_LSTM_DEVICE = ["CPU"]
 
 
 # Initialize short-term memory (h) and long-term memory (c) to 0
