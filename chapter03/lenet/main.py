@@ -22,6 +22,7 @@ python main.py --data_path /home/workspace/mindspore_dataset/Tutorial_Network/Le
                --mode test --ckpt_path checkpoint_lenet_1-1_1875.ckpt
 """
 import os
+import ast
 import argparse
 from config import mnist_cfg as cfg
 from lenet import LeNet5
@@ -84,7 +85,8 @@ if __name__ == "__main__":
                         help='path where the dataset is saved')
     parser.add_argument('--ckpt_path', type=str, default="./", help='if mode is test, must provide\
                         path where the trained ckpt file')
-    parser.add_argument('--dataset_sink_mode', type=bool, default=False, help='dataset_sink_mode is False or True')
+    parser.add_argument('--dataset_sink_mode', type=ast.literal_eval, default=True,
+                        help='dataset_sink_mode is False or True')
 
     args = parser.parse_args()
 
