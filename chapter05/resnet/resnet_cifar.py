@@ -22,14 +22,10 @@ import random
 import argparse
 import numpy as np
 from resnet import resnet50
-import mindspore.nn as nn
 import mindspore.common.dtype as mstype
-import mindspore.ops.functional as F
 import mindspore.dataset as de
 import mindspore.dataset.vision.c_transforms as C
 import mindspore.dataset.transforms.c_transforms as C2
-from mindspore import Tensor
-from mindspore.ops import operations as P
 from mindspore.nn.optim.momentum import Momentum
 from mindspore.train.model import Model
 from mindspore.context import ParallelMode

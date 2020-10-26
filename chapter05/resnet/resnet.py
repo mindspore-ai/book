@@ -14,7 +14,7 @@
 # ============================================================================
 """ResNet."""
 import mindspore.nn as nn
-from mindspore.ops import operations as P
+import mindspore.ops as ops
 from mindspore.common.initializer import TruncatedNormal, Normal
 
 def weight_variable(fan_in):
@@ -81,7 +81,7 @@ class BasicBlock(nn.Cell):
         self.bn1 = _fused_bn(out_channels, momentum=momentum)
         self.conv2 = _conv3x3(out_channels, out_channels)
         self.bn2 = _fused_bn(out_channels, momentum=momentum)
-        self.relu = P.ReLU()
+        self.relu = ops.ReLU()
         self.down_sample_layer = None
         self.downsample = (in_channels != out_channels)
         if self.downsample:
@@ -91,7 +91,7 @@ class BasicBlock(nn.Cell):
                                                                  padding=0),
                                                         _fused_bn(out_channels,
                                                                   momentum=momentum)])
-        self.add = P.TensorAdd()
+        self.add = ops.TensorAdd()
 
     def construct(self, x):
         identity = x
@@ -147,7 +147,7 @@ class ResidualBlock(nn.Cell):
         self.conv3 = _conv1x1(out_chls, out_channels, stride=1)
         self.bn3 = _fused_bn_last(out_channels, momentum=momentum)
 
-        self.relu = P.ReLU()
+        self.relu = ops.ReLU()
         self.downsample = (in_channels != out_channels)
         self.stride = stride
         if self.downsample:
@@ -157,7 +157,7 @@ class ResidualBlock(nn.Cell):
         elif self.stride != 1:
             self.maxpool_down = nn.MaxPool2d(kernel_size=1, stride=2, pad_mode='same')
 
-        self.add = P.TensorAdd()
+        self.add = ops.TensorAdd()
 
     def construct(self, x):
         identity = x
@@ -222,7 +222,7 @@ class ResNet(nn.Cell):
 
         self.conv1 = _conv7x7(3, 64, stride=2)
         self.bn1 = _fused_bn(64)
-        self.relu = P.ReLU()
+        self.relu = ops.ReLU()
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, pad_mode='same')
 
         self.layer1 = self._make_layer(block,
@@ -246,11 +246,11 @@ class ResNet(nn.Cell):
                                        out_channel=out_channels[3],
                                        stride=strides[3])
 
-        self.mean = P.ReduceMean(keep_dims=True)
+        self.mean = ops.ReduceMean(keep_dims=True)
         self.end_point = nn.Dense(out_channels[3], num_classes, has_bias=True,
                                   weight_init=dense_weight_variable())
-        self.squeeze = P.Squeeze()
-        self.cast = P.Cast()
+        self.squeeze = ops.Squeeze()
+        self.cast = ops.Cast()
 
     def _make_layer(self, block, layer_num, in_channel, out_channel, stride):
         """

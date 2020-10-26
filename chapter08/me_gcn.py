@@ -1,8 +1,7 @@
 from mindspore.nn.layer import Cell
-from mindspore.ops import operations
+import mindspore.ops as ops
 from mindspore.nn.layer.core import Dense
 from mindspore.nn.layer.activation import ReLU
-from mindspore.application.gnn import initialize_embedded_graph
 from mindspore.application.gnn.base import get_feature, get_neighbor, get_label
 from mindspore.ops.nn_ops import Momentum
 from mindspore.core.parameter import Parameter
@@ -11,9 +10,9 @@ from mindspore.application.gnn.base import NetWithLossClass, GradWrap
 class GCNAggregator(Cell):
     def __init__(self, in_dim, out_dim):
           super(GCNAggregator, self).__init__()
-          self.add = operations.TensorAdd()
-          self.div = operations.TensorDiv()
-          self.spmm = operations.SparseDenseMatmul()
+          self.add = ops.TensorAdd()
+          self.div = ops.TensorDiv()
+          self.spmm = ops.SparseDenseMatmul()
           self.fc = Dense(in_dim, out_dim)
           self.relu = ReLU()
     def construct(self, adj, node_emb, neighbor_emb):

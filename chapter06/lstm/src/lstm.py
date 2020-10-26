@@ -19,7 +19,7 @@ import numpy as np
 
 from mindspore import Tensor, nn, context, Parameter, ParameterTuple
 from mindspore.common.initializer import initializer
-from mindspore.ops import operations as P
+import mindspore.ops as ops
 
 STACK_LSTM_DEVICE = ["CPU"]
 
@@ -61,7 +61,7 @@ class StackLSTM(nn.Cell):
         super(StackLSTM, self).__init__()
         self.num_layers = num_layers
         self.batch_first = batch_first
-        self.transpose = P.Transpose()
+        self.transpose = ops.Transpose()
 
         # direction number
         num_directions = 2 if bidirectional else 1
@@ -133,7 +133,7 @@ class SentimentNet(nn.Cell):
                                       embed_size,
                                       embedding_table=weight)
         self.embedding.embedding_table.requires_grad = False
-        self.trans = P.Transpose()
+        self.trans = ops.Transpose()
         self.perm = (1, 0, 2)
 
         if context.get_context("device_target") in STACK_LSTM_DEVICE:
@@ -155,7 +155,7 @@ class SentimentNet(nn.Cell):
                                    dropout=0.0)
             self.h, self.c = lstm_default_state(batch_size, num_hiddens, num_layers, bidirectional)
 
-        self.concat = P.Concat(1)
+        self.concat = ops.Concat(1)
         if bidirectional:
             self.decoder = nn.Dense(num_hiddens * 4, num_classes)
         else:
