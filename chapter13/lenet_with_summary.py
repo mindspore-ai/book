@@ -20,11 +20,10 @@ from mindspore import dataset
 from mindspore import nn
 from mindspore import context, Tensor
 from mindspore.train import Model
-from mindspore.ops import operations as P
+import mindspore.ops as ops
 from mindspore.dataset.vision import c_transforms as transforms
 from mindspore.dataset.vision import Inter
 from mindspore.dataset.transforms import c_transforms as C
-from mindspore.ops import functional as F
 from mindspore.common import dtype as mstype
 from mindspore.train.callback import SummaryCollector
 
@@ -35,15 +34,15 @@ class CrossEntropyLoss(nn.Cell):
     """Define loss function for network."""
     def __init__(self):
         super(CrossEntropyLoss, self).__init__()
-        self.sm_scalar = P.ScalarSummary()
-        self.cross_entropy = P.SoftmaxCrossEntropyWithLogits()
-        self.mean = P.ReduceMean()
-        self.one_hot = P.OneHot()
+        self.sm_scalar = ops.ScalarSummary()
+        self.cross_entropy = ops.SoftmaxCrossEntropyWithLogits()
+        self.mean = ops.ReduceMean()
+        self.one_hot = ops.OneHot()
         self.on_value = Tensor(1.0, mstype.float32)
         self.off_value = Tensor(0.0, mstype.float32)
 
     def construct(self, logits, label):
-        label = self.one_hot(label, F.shape(logits)[1], self.on_value, self.off_value)
+        label = self.one_hot(label, ops.shape(logits)[1], self.on_value, self.off_value)
         loss = self.cross_entropy(logits, label)[0]
         loss = self.mean(loss, (-1,))
         self.sm_scalar("loss", loss)
