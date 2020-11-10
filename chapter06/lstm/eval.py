@@ -27,7 +27,7 @@ from src.lstm import SentimentNet
 from mindspore import Tensor, nn, Model, context
 from mindspore.nn import Accuracy
 from mindspore.train.callback import LossMonitor
-from mindspore.train.serialization import load_checkpoint, load_param_into_net
+from mindspore import load_checkpoint, load_param_into_net
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='MindSpore LSTM Example')
