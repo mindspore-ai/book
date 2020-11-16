@@ -24,10 +24,9 @@ import numpy as np
 from src.config import lstm_cfg as cfg
 from src.dataset import lstm_create_dataset, convert_to_mindrecord
 from src.lstm import SentimentNet
-from mindspore import Tensor, nn, Model, context
+from mindspore import Tensor, nn, Model, context, load_checkpoint, load_param_into_net
 from mindspore.nn import Accuracy
 from mindspore.train.callback import LossMonitor
-from mindspore import load_checkpoint, load_param_into_net
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='MindSpore LSTM Example')

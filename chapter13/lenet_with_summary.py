@@ -17,9 +17,7 @@ import os
 import argparse
 
 from mindspore import dataset
-from mindspore import nn
-from mindspore import context, Tensor
-from mindspore.train import Model
+from mindspore import nn, context, Tensor, Model
 import mindspore.ops as ops
 from mindspore.dataset.vision import c_transforms as transforms
 from mindspore.dataset.vision import Inter
