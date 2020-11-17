@@ -27,11 +27,8 @@ from alexnet import AlexNet
 from generator_lr import get_lr
 import mindspore.dataset as ds
 import mindspore.nn as nn
-from mindspore import Tensor
-from mindspore import context
-from mindspore import load_checkpoint, load_param_into_net
+from mindspore import Tensor, context, load_checkpoint, load_param_into_net, Model
 from mindspore.train.callback import ModelCheckpoint, CheckpointConfig, LossMonitor
-from mindspore.train import Model
 import mindspore.dataset.transforms.c_transforms as C
 import mindspore.dataset.vision.c_transforms as CV
 from mindspore.nn.metrics import Accuracy
