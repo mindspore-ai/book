@@ -1,7 +1,7 @@
-from mindspore.nn.layer import Cell
+from mindspore.nn import Cell
 import mindspore.ops as ops
-from mindspore.nn.layer.core import Dense
-from mindspore.nn.layer.activation import ReLU
+from mindspore.nn import Dense
+from mindspore.nn import ReLU
 from mindspore.application.gnn.base import get_feature, get_neighbor, get_label
 from mindspore.ops.nn_ops import Momentum
 from mindspore.core.parameter import Parameter
