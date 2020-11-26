@@ -31,8 +31,8 @@ from mindspore import Tensor, context, load_checkpoint, load_param_into_net, Mod
 from mindspore.train.callback import ModelCheckpoint, CheckpointConfig, LossMonitor
 import mindspore.dataset.transforms.c_transforms as C
 import mindspore.dataset.vision.c_transforms as CV
-from mindspore.nn.metrics import Accuracy
-from mindspore.common import dtype as mstype
+from mindspore.nn import Accuracy
+from mindspore import dtype as mstype
 
 
 def create_dataset(data_path, batch_size=32, repeat_size=1, mode="train"):

@@ -22,17 +22,17 @@ import random
 import argparse
 import numpy as np
 from resnet import resnet50
-import mindspore.common.dtype as mstype
+from mindspore import dtype as mstype
 import mindspore.dataset as de
 import mindspore.dataset.vision.c_transforms as C
 import mindspore.dataset.transforms.c_transforms as C2
-from mindspore.nn.optim.momentum import Momentum
+from mindspore.nn import Momentum
 from mindspore.context import ParallelMode
 from mindspore import context, Model, load_checkpoint, load_param_into_net
 from mindspore.train.callback import ModelCheckpoint, CheckpointConfig, LossMonitor
 from mindspore.communication.management import init
 from mindspore.parallel._auto_parallel_context import auto_parallel_context
-from mindspore.nn.loss import SoftmaxCrossEntropyWithLogits
+from mindspore.nn import SoftmaxCrossEntropyWithLogits
 random.seed(1)
 np.random.seed(1)
 de.config.set_seed(1)

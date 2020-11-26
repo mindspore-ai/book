@@ -20,7 +20,7 @@ import mindspore.dataset as de
 import mindspore.dataset.transforms.c_transforms as C
 import mindspore.dataset.vision.c_transforms as VC
 from mindspore.dataset.vision.utils import Inter
-from mindspore.common import dtype as mstype
+from mindspore import dtype as mstype
 import utils
 
 MNIST_URL = "http://yann.lecun.com/exdb/mnist/"

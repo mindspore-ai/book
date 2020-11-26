@@ -19,7 +19,7 @@ from easydict import EasyDict as edict
 import mindspore.dataset as de
 from mindspore.dataset.transforms import c_transforms as C
 from mindspore.dataset.vision import c_transforms as vision
-from mindspore.common import dtype as mstype
+from mindspore import dtype as mstype
 import utils
 
 CIFAR_URL = "http://www.cs.toronto.edu/~kriz/"

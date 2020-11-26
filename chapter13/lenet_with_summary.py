@@ -22,7 +22,7 @@ import mindspore.ops as ops
 from mindspore.dataset.vision import c_transforms as transforms
 from mindspore.dataset.vision import Inter
 from mindspore.dataset.transforms import c_transforms as C
-from mindspore.common import dtype as mstype
+from mindspore import dtype as mstype
 from mindspore.train.callback import SummaryCollector
 
 from .lenet import LeNet5
