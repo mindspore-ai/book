@@ -1,3 +1,4 @@
+"""gcn"""
 from mindspore.nn import Cell
 import mindspore.ops as ops
 from mindspore.nn import Dense
@@ -8,32 +9,34 @@ from mindspore.core.parameter import Parameter
 from mindspore.application.gnn.base import NetWithLossClass, GradWrap
 
 class GCNAggregator(Cell):
+    """Define aggregator class for network."""
     def __init__(self, in_dim, out_dim):
-          super(GCNAggregator, self).__init__()
-          self.add = ops.TensorAdd()
-          self.div = ops.TensorDiv()
-          self.spmm = ops.SparseDenseMatmul()
-          self.fc = Dense(in_dim, out_dim)
-          self.relu = ReLU()
+        super(GCNAggregator, self).__init__()
+        self.add = ops.TensorAdd()
+        self.div = ops.TensorDiv()
+        self.spmm = ops.SparseDenseMatmul()
+        self.fc = Dense(in_dim, out_dim)
+        self.relu = ReLU()
     def construct(self, adj, node_emb, neighbor_emb):
-          agg_emb = self.spmm(adj[0], adj[1], adj[2], neighbor_emb)
-          agg_emb = self.add(node_emb, agg_emb)
-          agg_emb = self.div(agg_emb, adj[3])
-          agg_emb = self.fc(agg_emb)
-          agg_emb = self.relu(agg_emb)
-          return agg_emb
+        agg_emb = self.spmm(adj[0], adj[1], adj[2], neighbor_emb)
+        agg_emb = self.add(node_emb, agg_emb)
+        agg_emb = self.div(agg_emb, adj[3])
+        agg_emb = self.fc(agg_emb)
+        agg_emb = self.relu(agg_emb)
+        return agg_emb
 
 class SingleLayerGCN(Cell):
     def __init__(self, in_dim, out_dim, num_classes):
         super(SingleLayerGCN, self).__init__()
         self.aggregator = GCNAggregator(in_dim, out_dim)
         self.output_layer = Dense(out_dim, num_classes)
-    def construct(self, adj, node_feature, neighbor_feature ):
+    def construct(self, adj, node_feature, neighbor_feature):
         embeddings = self.aggregator(adj, node_feature, neighbor_feature)
         output = self.output_layer(embeddings)
         return output
 
-def GCNTrainer(in_dim, out_dim, num_classes,num_epoch, graph_data):
+def GCNTrainer(in_dim, out_dim, num_classes, num_epoch, graph_data):
+    """GCN trainer method"""
     input_node, neighbor_node, node_feature, neighbor_feature, labels = graph_data
     network = SingleLayerGCN(in_dim, out_dim, num_classes)
     loss_network = NetWithLossClass(network)
@@ -60,4 +63,4 @@ in_dim = IN_DIM
 out_dim = OUT_DIM
 num_classes = CLASS_NUM
 num_epoch = EPOCH_NUM
-GCNTrainer(in_dim, out_dim, num_classes,num_epoch, graph_data)
+GCNTrainer(in_dim, out_dim, num_classes, num_epoch, graph_data)

@@ -1,3 +1,4 @@
+"""cifar10"""
 # Copyright 2019 Huawei Technologies Co., Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 # ==============================================================================
 
 import os
-from easydict import EasyDict as edict
 
 import mindspore.dataset as de
 from mindspore.dataset.transforms import c_transforms as C
@@ -25,14 +25,15 @@ import utils
 CIFAR_URL = "http://www.cs.toronto.edu/~kriz/"
 
 def download_cifar(target_directory, files, directory_from_tar):
-    if target_directory == None:
+    """download cifar"""
+    if target_directory is None:
         target_directory = utils.create_data_cache_dir()
 
     utils.download_and_uncompress([files], CIFAR_URL, target_directory, is_tar=True)
 
     ##if target dir was specify move data from directory created by tar
     ##and put data into target dir
-    if target_directory != None:
+    if target_directory is not None:
         tar_dir_full_path = os.path.join(target_directory, directory_from_tar)
         all_files = os.path.join(tar_dir_full_path, "*")
         cmd = "mv " + all_files + " " + target_directory
@@ -53,7 +54,7 @@ def download_cifar(target_directory, files, directory_from_tar):
     ##change target directory to directory after tar
     return target_directory, os.path.join(target_directory, directory_from_tar)
 
-def create_cifar10_dataset(cifar_dir, num_parallel_workers=1):
+def create_cifar10_dataset(cifar_dir):
     """
     Creat the cifar10 dataset.
     """

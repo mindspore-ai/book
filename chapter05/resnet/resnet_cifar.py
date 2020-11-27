@@ -108,7 +108,8 @@ def create_dataset(repeat_num=1, training=True):
 
 if __name__ == '__main__':
     if args_opt.mode == 'train' and args_opt.run_distribute:
-        context.set_auto_parallel_context(device_num=args_opt.device_num, parallel_mode=ParallelMode.DATA_PARALLEL, gradients_mean=True)
+        context.set_auto_parallel_context(device_num=args_opt.device_num,
+                                          parallel_mode=ParallelMode.DATA_PARALLEL, gradients_mean=True)
         auto_parallel_context().set_all_reduce_fusion_split_indices([140])
         init()
 
