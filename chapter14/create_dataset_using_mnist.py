@@ -1,3 +1,4 @@
+"""mnist"""
 # Copyright 2019 Huawei Technologies Co., Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,6 +41,7 @@ MNIST_CONFIG = edict({
 })
 
 def download_mnist(target_directory=None):
+    """download mnist method"""
     if target_directory is None:
         target_directory = utils.create_data_cache_dir()
 
@@ -60,6 +62,7 @@ def download_mnist(target_directory=None):
     return target_directory, os.path.join(target_directory, "datasetSchema.json")
 
 def create_mnist_dataset(mnist_dir, num_parallel_workers=1):
+    """create mnist dataset method"""
     ds = de.MnistDataset(mnist_dir)
 
     # apply map operations on images
@@ -86,8 +89,8 @@ def create_mnist_dataset(mnist_dir, num_parallel_workers=1):
     return ds
 
 if __name__ == "__main__":
-    mnistDir, _ = download_mnist()
-    data_set = create_mnist_dataset(mnistDir, 2)
+    minist_dir, _ = download_mnist()
+    data_set = create_mnist_dataset(minist_dir, 2)
     for data in data_set.create_dict_iterator():
         print(data['image'].shape)
         print(data['label'])

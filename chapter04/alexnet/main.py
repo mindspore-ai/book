@@ -98,7 +98,7 @@ if __name__ == "__main__":
                                   args.mode)
         config_ck = CheckpointConfig(save_checkpoint_steps=cfg.save_checkpoint_steps,
                                      keep_checkpoint_max=cfg.keep_checkpoint_max)
-        ckpoint_cb = ModelCheckpoint(prefix="checkpoint_alexnet",  directory=args.ckpt_path, config=config_ck)
+        ckpoint_cb = ModelCheckpoint(prefix="checkpoint_alexnet", directory=args.ckpt_path, config=config_ck)
         model.train(cfg.epoch_size, ds_train, callbacks=[ckpoint_cb, LossMonitor()],
                     dataset_sink_mode=args.dataset_sink_mode)
     elif args.mode == 'test':
