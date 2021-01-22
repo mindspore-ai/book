@@ -56,7 +56,7 @@ def download_cifar(target_directory, files, directory_from_tar):
 
 def create_cifar10_dataset(cifar_dir):
     """
-    Creat the cifar10 dataset.
+    Create the cifar10 dataset.
     """
     ds = de.Cifar10Dataset(cifar_dir)
 
