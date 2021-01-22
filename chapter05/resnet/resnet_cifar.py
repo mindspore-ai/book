@@ -15,7 +15,7 @@
 """
 train and evaluate resnet example for cifar10 dataset
 1.The sample can only be run on Ascend 910 AI processor.
-2.Aroud 30s per epoch and about 90% accuracy when the number of epoch reaches 34.
+2.Around 30s per epoch and about 90% accuracy when the number of epoch reaches 34.
 """
 import os
 import random
@@ -58,7 +58,7 @@ data_home = args_opt.dataset_path
 #Choose the graph_mode as mode, the env is Ascend and save graphs like ir
 context.set_context(mode=context.GRAPH_MODE, device_target=args_opt.device_target, save_graphs=True)
 if args_opt.device_target == "Ascend":
-    #Choose one availabe Device to use on users' env.
+    #Choose one available Device to use on users' env.
     device_id = int(os.getenv('DEVICE_ID'))
     context.set_context(device_id=device_id)
 

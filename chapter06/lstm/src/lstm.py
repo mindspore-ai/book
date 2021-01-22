@@ -128,7 +128,7 @@ class SentimentNet(nn.Cell):
                  weight,
                  batch_size):
         super(SentimentNet, self).__init__()
-        # Mapp words to vectors
+        # Map words to vectors
         self.embedding = nn.Embedding(vocab_size,
                                       embed_size,
                                       embedding_table=weight)
