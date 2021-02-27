@@ -91,7 +91,7 @@ class BasicBlock(nn.Cell):
                                                                  padding=0),
                                                         _fused_bn(out_channels,
                                                                   momentum=momentum)])
-        self.add = ops.TensorAdd()
+        self.add = ops.add()
 
     def construct(self, x):
         identity = x
@@ -157,7 +157,7 @@ class ResidualBlock(nn.Cell):
         elif self.stride != 1:
             self.maxpool_down = nn.MaxPool2d(kernel_size=1, stride=2, pad_mode='same')
 
-        self.add = ops.TensorAdd()
+        self.add = ops.add()
 
     def construct(self, x):
         identity = x

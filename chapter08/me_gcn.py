@@ -12,7 +12,7 @@ class GCNAggregator(Cell):
     """Define aggregator class for network."""
     def __init__(self, in_dim, out_dim):
         super(GCNAggregator, self).__init__()
-        self.add = ops.TensorAdd()
+        self.add = ops.add()
         self.div = ops.TensorDiv()
         self.spmm = ops.SparseDenseMatmul()
         self.fc = Dense(in_dim, out_dim)
