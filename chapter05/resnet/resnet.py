@@ -91,7 +91,6 @@ class BasicBlock(nn.Cell):
                                                                  padding=0),
                                                         _fused_bn(out_channels,
                                                                   momentum=momentum)])
-        self.add = ops.add()
 
     def construct(self, x):
         identity = x
@@ -106,7 +105,7 @@ class BasicBlock(nn.Cell):
         if self.downsample:
             identity = self.down_sample_layer(identity)
 
-        out = self.add(x, identity)
+        out = x + identity
         out = self.relu(out)
 
         return out
@@ -157,7 +156,6 @@ class ResidualBlock(nn.Cell):
         elif self.stride != 1:
             self.maxpool_down = nn.MaxPool2d(kernel_size=1, stride=2, pad_mode='same')
 
-        self.add = ops.add()
 
     def construct(self, x):
         identity = x
@@ -179,7 +177,7 @@ class ResidualBlock(nn.Cell):
         elif self.stride != 1:
             identity = self.maxpool_down(identity)
 
-        out = self.add(out, identity)
+        out = out + identity
         out = self.relu(out)
 
         return out
