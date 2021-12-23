@@ -13,9 +13,8 @@
 # limitations under the License.
 # ============================================================================
 """LSTM."""
-from mindspore import nn
-from mindspore.ops as ops
-
+import mindspore.nn as nn
+import mindspore.ops as ops
 
 class SentimentNet(nn.Cell):
     """Sentiment network structure."""
@@ -27,8 +26,7 @@ class SentimentNet(nn.Cell):
                  num_layers,
                  bidirectional,
                  num_classes,
-                 weight,
-                 batch_size):
+                 weight):
         super(SentimentNet, self).__init__()
         # Map words to vectors
         self.embedding = nn.Embedding(vocab_size,
